@@ -11,7 +11,7 @@ public class Server {
             ServerSocket server = new ServerSocket(5000);
             for(int i = 0; true; i++) {
                 socket = server.accept();
-                echo = new ServerEcho(socket, i % 3, echoes);
+                echo = new ServerEcho(socket, i, echoes);
                 echoes.add(echo);
                 echo.start();
             }

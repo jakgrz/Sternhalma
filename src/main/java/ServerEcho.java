@@ -21,6 +21,7 @@ public class ServerEcho extends Thread {
         try {
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
+            output.println(id);
             String line;
             while(true) {
                 line = input.readLine();
