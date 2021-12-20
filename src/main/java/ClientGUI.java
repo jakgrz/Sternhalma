@@ -16,6 +16,7 @@ public class ClientGUI extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(0, 1));
+        setResizable(false);
 
         client = new Client(this);
 
@@ -36,6 +37,7 @@ public class ClientGUI extends JFrame {
         add(in);
 
         setTitle("Sternhalma " + client.getID());
+        getRootPane().setDefaultButton(postButton);
     }
 
     public void receive(String message, boolean active) {
