@@ -25,12 +25,9 @@ public class ServerEcho extends Thread {
             String line;
             while(true) {
                 line = input.readLine();
-                if(line == null || line.equalsIgnoreCase("quit")) {
-                    break;
-                }
                 printToAll(line);
             }
-            socket.close();
+//            socket.close();
         } catch (Exception ex) {
             System.out.println("Error occurred...");
         }

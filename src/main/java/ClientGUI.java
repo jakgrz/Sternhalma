@@ -6,13 +6,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class ClientGUI extends JFrame {
-    int id;
     Client client;
     JTextField in;
     JTextArea out;
     JButton postButton;
-
-    public void setID(int id) { this.id = id; }
 
     public ClientGUI() {
         setSize(320, 240);
@@ -31,21 +28,22 @@ public class ClientGUI extends JFrame {
             client.post(in.getText());
             in.setText("");
             in.requestFocus();
-//            postButton.setEnabled(false);
+            postButton.setEnabled(false);
         });
 
         add(out);
         add(postButton);
         add(in);
 
-        setTitle("Sternhalma " + id);
+        setTitle("Sternhalma " + client.getID());
     }
 
-    public void receive(String message) {
+    public void receive(String message, boolean active) {
         out.append(message);
-//        if(Integer.parseInt(String.valueOf(message.charAt(0))) % 3 == id) {
-//            postButton.setEnabled(true);
-//        }
+        out.append(System.lineSeparator());
+        if(active) {
+            postButton.setEnabled(true);
+        }
     }
 
     public static void main(String[] args) {
