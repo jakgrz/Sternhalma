@@ -4,7 +4,7 @@ public class MyFrame extends JFrame {
     MyPanel panel;
 
     MyFrame() {
-        this.panel = new MyPanel(new Map(6));
+        this.panel = new MyPanel(new Map(4), 4);
         this.setTitle("Demo");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setSize(720,480);

@@ -3,24 +3,26 @@ import java.awt.geom.Ellipse2D;
 
 public class Field extends Ellipse2D.Float {
     private boolean enabled;
-    private Pawn pawn;
+    //private Pawn pawn;
     private Color color;
+    private int colorNumber;
 
-    public Field(Pawn pawn, boolean enabled, double x, double y) {
-        this.pawn = pawn;
+    public Field(int colorNumber, boolean enabled, double x, double y) {
+        //this.pawn = pawn;
         this.enabled = enabled;
+        //this.colorNumber = colorNumber;
         //
         if (enabled) {
-            if (pawn == null) {
+            this.setColor(colorNumber);
+            this.setColorNumber(colorNumber);
+            /*if (pawn == null) {
                 this.setColor(0);
             }
             else {
                 this.setColor(pawn.getColor());
-            }
+            }*/
+            this.setFrame(x,y,30,30);
         }
-
-        this.setFrame(x,y,30,30);
-
     }
 
     public void setColor(int color) {
@@ -56,13 +58,21 @@ public class Field extends Ellipse2D.Float {
         return this.color;
     }
 
-    public void setPawn(Pawn pawn) {
+    public int getColorNumber() {
+        return this.colorNumber;
+    }
+
+    public void setColorNumber(int colorNumber) {
+        this.colorNumber = colorNumber;
+    }
+
+    /*public void setPawn(Pawn pawn) {
         this.pawn = pawn;
     }
 
     public Pawn getPawn() {
         return this.pawn;
-    }
+    }*/
 
     public boolean isEnabled() {
         return this.enabled;
