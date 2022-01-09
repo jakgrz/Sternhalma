@@ -368,7 +368,7 @@ public class Map {
     }
 
     private void setField(int x, int y, Pawn pawn, boolean isEnabled) {
-        this.fields[x][y] = new Field(pawn, isEnabled);
+        this.fields[x][y] = new Field(pawn, isEnabled,50 + 17.5 * y, 50 + 30 * x);
     }
 
     public Field getField(int x, int y) {
