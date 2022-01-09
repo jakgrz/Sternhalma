@@ -1,6 +1,7 @@
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Server {
     public static void main(String[] args) {
@@ -8,8 +9,13 @@ public class Server {
         Socket socket = null;
         ServerEcho echo = null;
         try {
+            Scanner scanner = new Scanner(System.in);
+//            System.out.print("Enter port number: ");
+//            int port = scanner.nextInt();
+            System.out.print("Enter player count: ");
+            int count = scanner.nextInt();
             ServerSocket server = new ServerSocket(5000);
-            for(int i = 0; true; i++) {
+            for(int i = 0; i < count; i++) {
                 socket = server.accept();
                 echo = new ServerEcho(socket, i, echoes);
                 echoes.add(echo);

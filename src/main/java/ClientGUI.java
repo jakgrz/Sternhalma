@@ -14,11 +14,20 @@ public class ClientGUI extends JFrame {
     public ClientGUI() {
         setSize(320, 240);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(0, 1));
         setResizable(false);
 
-        client = new Client(this);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                client.post("quit");
+                System.exit(0);
+            }
+        });
+
+        String host = JOptionPane.showInputDialog(this, "Enter IP:");
+
+        client = new Client(this, host, 5000);
 
         in = new JTextField();
         out = new JTextArea();
@@ -29,7 +38,7 @@ public class ClientGUI extends JFrame {
             client.post(in.getText());
             in.setText("");
             in.requestFocus();
-            postButton.setEnabled(false);
+//            postButton.setEnabled(false);
         });
 
         add(out);
@@ -40,12 +49,12 @@ public class ClientGUI extends JFrame {
         getRootPane().setDefaultButton(postButton);
     }
 
-    public void receive(String message, boolean active) {
+    public void receive(String message/*, boolean active*/) {
         out.append(message);
         out.append(System.lineSeparator());
-        if(active) {
-            postButton.setEnabled(true);
-        }
+//        if(active) {
+//            postButton.setEnabled(true);
+//        }
     }
 
     public static void main(String[] args) {

@@ -25,9 +25,13 @@ public class ServerEcho extends Thread {
             String line;
             while(true) {
                 line = input.readLine();
+                if(line.substring(3).equals("quit"))
+                    break;
                 printToAll(line);
             }
-//            socket.close();
+            printToAll("Player " + id + " left...");
+            echoes.remove(this);
+            socket.close();
         } catch (Exception ex) {
             System.out.println("Error occurred...");
         }

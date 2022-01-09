@@ -12,10 +12,10 @@ public class Client {
     public void setID(int id) { this.id = id; }
     public int getID() { return this.id; }
 
-    public Client(ClientGUI gui) {
+    public Client(ClientGUI gui, String host, int port) {
         this.gui = gui;
         try {
-            socket = new Socket("localhost", 5000);
+            socket = new Socket(host, port);
             output = new PrintWriter(socket.getOutputStream(), true);
         } catch (UnknownHostException ex) {
             System.out.println("Unknown host...");
@@ -32,6 +32,6 @@ public class Client {
     }
 
     public void receive(String message) {
-        gui.receive(message, (Integer.parseInt(String.valueOf(message.charAt(0))) + 1) % 3 == id);
+        gui.receive(message/*, (Integer.parseInt(String.valueOf(message.charAt(0))) + 1) % 3 == id*/);
     }
 }
