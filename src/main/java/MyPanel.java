@@ -5,19 +5,22 @@ import java.awt.event.MouseListener;
 
 public class MyPanel extends JPanel implements MouseListener {
     private Map map;
+    private MyLabel label;
     private Field tempField;
     private int activePlayer;
     private int numberOfPlayers;
     private boolean move;
     private int active_x, active_y;
 
-    MyPanel(Map map, int numberOfPlayers) {
+    MyPanel(Map map, int numberOfPlayers, MyLabel myLabel) {
         this.setPreferredSize(new Dimension(720,480));
         this.map = map;
         this.numberOfPlayers = numberOfPlayers;
         addMouseListener(this);
-        this.activePlayer = 1;
+        this.activePlayer = (int) Math.floor(Math.random() * numberOfPlayers) + 1;
         this.move = false;
+        this.label = myLabel;
+        myLabel.setText("Zaczyna gracz numer: " + this.activePlayer);
     }
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
@@ -56,6 +59,18 @@ public class MyPanel extends JPanel implements MouseListener {
                     //map.getField(i,j).setColor(this.activePlayer);
                     //map.getField(i,j).setColorNumber(activePlayer);
 
+                    //anulujemy ruch
+                    if (map.getField(i,j).getColorNumber() == 10  && move == true) {
+                        map.getField(i,j).setColor(activePlayer);
+                        map.getField(i,j).setColorNumber(activePlayer);
+                        move = false;
+                        activePlayer++;
+                        if (activePlayer > numberOfPlayers) {
+                            activePlayer = 1;
+                        }
+                        label.setText("Ruch gracza numer: " + this.activePlayer);
+                    }
+
                     //wybieramy pionek do ruchu i zaznaczamy go
                     if (map.getField(i,j).getColorNumber() == this.activePlayer && move == false) {
                         map.getField(i,j).setColor(10);
@@ -76,7 +91,9 @@ public class MyPanel extends JPanel implements MouseListener {
                         if (activePlayer > numberOfPlayers) {
                             activePlayer = 1;
                         }
+                        label.setText("Ruch gracza numer: " + this.activePlayer);
                     }
+
                     repaint();
                 }
             }

@@ -8,62 +8,6 @@ public class Map {
 
         for (int i = 0; i < 17; ++i) {
             for (int j = 0; j < 25; ++j) {
-                /*if (i == 0 || i == 16) {
-                    if (j == 12) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                } else if (i == 1 || i == 15) {
-                    if (j == 11 || j == 13) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                } else if (i == 2 || i == 14) {
-                    if (j == 10 || j == 12 || j == 14) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                } else if (i == 3 || i == 13) {
-                    if (j == 9 || j == 11 || j == 13 || j == 15) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                } else if (i == 4 || i == 12) {
-                    if (j % 2 == 0) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                } else if (i == 5 || i == 11) {
-                    if (j % 2 == 1) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                } else if (i == 6 || i == 10) {
-                    if (j % 2 == 0 && j != 0 && j != 24) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                } else if (i == 7 || i == 9) {
-                    if (j % 2 == 1 && j != 1 && j != 23) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                } else if (i == 8) {
-                    if (j % 2 == 0 && j != 0 && j != 2 && j != 22 && j != 24) {
-                        setField(i, j,null,true);
-                    } else {
-                        setField(i, j, null,false);
-                    }
-                }*/
-
                 if (i == 0) {
                     if (j == 12) {
                         if (players == 2 || players == 3 || players == 4 || players == 6) {
@@ -298,10 +242,7 @@ public class Map {
                     if (j == 9 || j == 11 || j == 13 || j == 15) {
                         if (players == 2) {
                             setField(i, j, 2,true);
-                        } //else if (players == 3) {
-                            //setField(i, j,null,true);
-                        //}
-                        else if (players == 4) {
+                        } else if (players == 4) {
                             setField(i, j, 3,true);
                         } else if (players == 6) {
                             setField(i, j, 4,true);
@@ -315,10 +256,7 @@ public class Map {
                     if (j == 10 || j == 12 || j == 14) {
                         if (players == 2) {
                             setField(i, j, 2,true);
-                        } //else if (players == 3) {
-                            //setField(i, j,null,true);
-                        //}
-                        else if (players == 4) {
+                        } else if (players == 4) {
                             setField(i, j, 3,true);
                         } else if (players == 6) {
                             setField(i, j, 4,true);
@@ -332,10 +270,7 @@ public class Map {
                     if (j == 11 || j == 13) {
                         if (players == 2) {
                             setField(i, j, 2,true);
-                        } //else if (players == 3) {
-                          //  setField(i, j,null,true);
-                        //}
-                        else if (players == 4) {
+                        } else if (players == 4) {
                             setField(i, j, 3,true);
                         } else if (players == 6) {
                             setField(i, j,4,true);
@@ -349,10 +284,7 @@ public class Map {
                     if (j == 12) {
                         if (players == 2) {
                             setField(i, j, 2,true);
-                        } //else if (players == 3) {
-                            //setField(i, j,null,true);
-                        //}
-                        else if (players == 4) {
+                        } else if (players == 4) {
                             setField(i, j, 3,true);
                         } else if (players == 6) {
                             setField(i, j, 4,true);

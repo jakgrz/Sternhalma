@@ -1,17 +1,18 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class MyFrame extends JFrame {
     MyPanel panel;
+    MyLabel label;
 
     MyFrame() {
-        this.panel = new MyPanel(new Map(4), 4);
+        this.label = new MyLabel();
+        this.panel = new MyPanel(new Map(6), 6, label);
         this.setTitle("Demo");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.setSize(720,480);
-        //this.setLocationRelativeTo(null);
-        this.add(panel);
-        //this.pack();
-        //this.setUndecorated(true);
+
+        this.add(panel, BorderLayout.CENTER);
+        this.add(label,BorderLayout.SOUTH);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(true);
     }
