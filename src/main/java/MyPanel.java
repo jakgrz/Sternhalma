@@ -14,7 +14,7 @@ public class MyPanel extends JPanel implements MouseListener {
     private boolean move;
     private boolean jump;
     private int active_x, active_y;
-    //private int previous_x, previous_y;
+    private int previous_x, previous_y;
     private Vector<Integer> players;
     private int playerIndex;
     boolean gameFinished;
@@ -31,8 +31,8 @@ public class MyPanel extends JPanel implements MouseListener {
         this.label = myLabel;
         this.gameFinished = false;
         this.mustJump = false;
-        //this.previous_x = -1;
-        //this.previous_y = -1;
+        this.previous_x = -1;
+        this.previous_y = -1;
 
         players = new Vector<>();
         for (int i = 0; i < numberOfPlayers; ++i) {
@@ -59,7 +59,7 @@ public class MyPanel extends JPanel implements MouseListener {
         }
     }
 
-    private boolean validMove(int x_0, int y_0, int x_1, int y_1) {
+    private boolean validMove(int x_0, int y_0, int x_1, int y_1, int x_2, int y_2) {
         //sprawdzam czy nie wychodze z pola docelowego
         if (map.getField(x_0,y_0).getDestinationColor() == activePlayer && map.getField(x_1,y_1).getDestinationColor() != activePlayer)
             return false;
@@ -69,32 +69,32 @@ public class MyPanel extends JPanel implements MouseListener {
             return true;
 
         //sprawdzam czy wykonany jest skok w lewo
-        if (x_0 == x_1 && y_0 - y_1 == 4 && (map.getField(x_1, y_1 + 2).getColorNumber() >= 1 && map.getField(x_1, y_1 + 2).getColorNumber() <= 6)) {
+        if ((x_1 != x_2 || y_1 != y_2) && x_0 == x_1 && y_0 - y_1 == 4 && (map.getField(x_1, y_1 + 2).getColorNumber() >= 1 && map.getField(x_1, y_1 + 2).getColorNumber() <= 6)) {
             jump = true;
             return true;
         }
         //sprawdzam czy wykonany jest skok w prawo
-        if (x_0 == x_1 && y_1 - y_0 == 4 && (map.getField(x_1, y_1 - 2).getColorNumber() >= 1 && map.getField(x_1, y_1 - 2).getColorNumber() <= 6)) {
+        if ((x_1 != x_2 || y_1 != y_2) && x_0 == x_1 && y_1 - y_0 == 4 && (map.getField(x_1, y_1 - 2).getColorNumber() >= 1 && map.getField(x_1, y_1 - 2).getColorNumber() <= 6)) {
             jump = true;
             return true;
         }
         //sprawdzam czy wykonany jest skok w lewo-gora
-        if (x_0 - x_1 == 2 && y_0 - y_1 == 2 && (map.getField(x_1 + 1, y_1 + 1).getColorNumber() >= 1 && map.getField(x_1 + 1, y_1 + 1).getColorNumber() <= 6)) {
+        if ((x_1 != x_2 || y_1 != y_2) && x_0 - x_1 == 2 && y_0 - y_1 == 2 && (map.getField(x_1 + 1, y_1 + 1).getColorNumber() >= 1 && map.getField(x_1 + 1, y_1 + 1).getColorNumber() <= 6)) {
             jump = true;
             return true;
         }
         //sprawdzam czy wykonany jest skok w lewo-dol
-        if (x_1 - x_0 == 2 && y_0 - y_1 == 2 && (map.getField(x_1 - 1, y_1 + 1).getColorNumber() >= 1 && map.getField(x_1 - 1, y_1 + 1).getColorNumber() <= 6)) {
+        if ((x_1 != x_2 || y_1 != y_2) && x_1 - x_0 == 2 && y_0 - y_1 == 2 && (map.getField(x_1 - 1, y_1 + 1).getColorNumber() >= 1 && map.getField(x_1 - 1, y_1 + 1).getColorNumber() <= 6)) {
             jump = true;
             return true;
         }
         //sprawdzam czy wykonany jest skok w prawo-gora
-        if (x_0 - x_1 == 2 && y_1 - y_0 == 2 && (map.getField(x_1 + 1, y_1 - 1).getColorNumber() >= 1 && map.getField(x_1 + 1, y_1 - 1).getColorNumber() <= 6)) {
+        if ((x_1 != x_2 || y_1 != y_2) && x_0 - x_1 == 2 && y_1 - y_0 == 2 && (map.getField(x_1 + 1, y_1 - 1).getColorNumber() >= 1 && map.getField(x_1 + 1, y_1 - 1).getColorNumber() <= 6)) {
             jump = true;
             return true;
         }
         //sprawdzam czy wykonany jest skok w prawo-dol
-        if (x_1 - x_0 == 2 && y_1 - y_0 == 2 && (map.getField(x_1 - 1, y_1 - 1).getColorNumber() >= 1 && map.getField(x_1 - 1, y_1 - 1).getColorNumber() <= 6)) {
+        if ((x_1 != x_2 || y_1 != y_2) && x_1 - x_0 == 2 && y_1 - y_0 == 2 && (map.getField(x_1 - 1, y_1 - 1).getColorNumber() >= 1 && map.getField(x_1 - 1, y_1 - 1).getColorNumber() <= 6)) {
             jump = true;
             return true;
         }
@@ -163,7 +163,7 @@ public class MyPanel extends JPanel implements MouseListener {
                         }
 
                         //ruszamy pionkiem
-                        if (map.getField(i,j).getColorNumber() == 0 && move == true && validMove(active_x, active_y, i, j)) {
+                        if (map.getField(i,j).getColorNumber() == 0 && move == true && validMove(active_x, active_y, i, j, previous_x, previous_y)) {
                             if (jump) {
                             /*map.getField(i,j).setColor(10);
                             map.getField(i,j).setColorNumber(10);
@@ -173,11 +173,15 @@ public class MyPanel extends JPanel implements MouseListener {
                             active_y = j;
                             jump = false;*/
 
+                                //sprawdzam czy po tym skoku beda dostepne inne skoki
+                                //jesli tak to pionek zostaje aktywny
                                 if (nextJump(i, j)) {
                                     map.getField(i,j).setColor(10);
                                     map.getField(i,j).setColorNumber(10);
                                     map.getField(active_x,active_y).setColor(0);
                                     map.getField(active_x,active_y).setColorNumber(0);
+                                    previous_x = active_x;
+                                    previous_y = active_y;
                                     active_x = i;
                                     active_y = j;
                                     mustJump = true;
@@ -206,6 +210,9 @@ public class MyPanel extends JPanel implements MouseListener {
                                     map.getField(active_x,active_y).setColorNumber(0);
 
                                     hasFinished(this.activePlayer);
+
+                                    previous_x = -1;
+                                    previous_y = -1;
 
                                     mustJump = false;
                                     move = false;
@@ -282,6 +289,9 @@ public class MyPanel extends JPanel implements MouseListener {
             map.getField(active_x,active_y).setColor(activePlayer);
             //repaint();
         }
+
+        previous_x = -1;
+        previous_y = -1;
 
         playerIndex++;
         if (playerIndex >= players.size()) {
