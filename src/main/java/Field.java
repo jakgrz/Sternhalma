@@ -5,11 +5,13 @@ public class Field extends Ellipse2D.Float {
     private boolean enabled;
     private Color color;
     private int colorNumber;
+    private int destinationColor;
 
-    public Field(int colorNumber, boolean enabled, double x, double y) {
+    public Field(int colorNumber, int destinationColor, boolean enabled, double x, double y) {
         this.enabled = enabled;
         if (enabled) {
             this.setColor(colorNumber);
+            this.destinationColor = destinationColor;
             this.setColorNumber(colorNumber);
             this.setFrame(x,y,30,30);
         }
@@ -50,6 +52,10 @@ public class Field extends Ellipse2D.Float {
 
     public int getColorNumber() {
         return this.colorNumber;
+    }
+
+    public int getDestinationColor() {
+        return this.destinationColor;
     }
 
     public void setColorNumber(int colorNumber) {

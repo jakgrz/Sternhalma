@@ -7,7 +7,7 @@ public class MyFrame extends JFrame {
 
     MyFrame() {
         this.label = new MyLabel();
-        this.panel = new MyPanel(new Map(6), 6, label);
+        this.panel = new MyPanel(new Map(2), 2, label);
         this.setTitle("Demo");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
