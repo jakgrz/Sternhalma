@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,25 +21,23 @@ public class ClientGUI extends JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                client.post("quit");
-                System.exit(0);
+                quit();
             }
         });
-
-        String host = JOptionPane.showInputDialog(this, "Enter IP:");
-
-        client = new Client(this, host, 5000);
 
         in = new JTextField();
         out = new JTextArea();
         out.setEditable(false);
-        postButton = new JButton("Post");
+        postButton = new JButton("Please wait");
+        postButton.setEnabled(false);
+
+        connect();
 
         postButton.addActionListener(e -> {
             client.post(in.getText());
             in.setText("");
             in.requestFocus();
-//            postButton.setEnabled(false);
+            postButton.setEnabled(false);
         });
 
         add(out);
@@ -49,12 +48,22 @@ public class ClientGUI extends JFrame {
         getRootPane().setDefaultButton(postButton);
     }
 
-    public void receive(String message/*, boolean active*/) {
-        out.append(message);
-        out.append(System.lineSeparator());
-//        if(active) {
-//            postButton.setEnabled(true);
-//        }
+    public void connect() {
+        String host = JOptionPane.showInputDialog(this, "Enter IP:");
+        client = new Client(this, host, 5000);
+        out.setText("");
+    }
+
+    public void receive(String message, boolean active) {
+        out.setText(message);
+        if(active) {
+            postButton.setEnabled(true);
+        }
+    }
+
+    public void quit() {
+        client.post("quit");
+        System.exit(0);
     }
 
     public static void main(String[] args) {

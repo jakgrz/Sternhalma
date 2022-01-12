@@ -28,10 +28,15 @@ public class Client {
     }
 
     public void post(String message) {
-        output.println(id + ": " + message);
+        output.println(id + message + "control");
     }
 
-    public void receive(String message) {
-        gui.receive(message/*, (Integer.parseInt(String.valueOf(message.charAt(0))) + 1) % 3 == id*/);
+    public void receive(String message, boolean active) {
+        gui.receive(message, active);
+    }
+
+    public void quit() throws IOException {
+        gui.quit();
+        socket.close();
     }
 }
