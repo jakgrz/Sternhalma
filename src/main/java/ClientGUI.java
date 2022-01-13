@@ -71,6 +71,7 @@ public class ClientGUI extends JFrame {
 
     public static void main(String[] args) {
         ClientGUI client = new ClientGUI();
+        client.setTitle("Sternhalma");
         client.setVisible(true);
     }
 }

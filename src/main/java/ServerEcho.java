@@ -44,40 +44,42 @@ public class ServerEcho extends Thread {
                     continue;
                 }
                 if(line.substring(1).equals("quitcontrol")) {
+                    leave(false);
                     break;
                 }
                 if(line.substring(1).equals("quitnextcontrol")) {
-                    printToAll(echoes.get((echoes.indexOf(this) + 1) % echoes.size()).id + test.toString());
+                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + test.toString());
+                    leave(false);
                     break;
                 }
                 if(line.substring(1).equals("wincontrol")) {
                     printToAll("Won");
+                    leave(true);
                     break;
                 }
                 if(test.place(id, Integer.parseInt(line.substring(1, 2)), Integer.parseInt(line.substring(2, 3)))) {
                     output.println(id + test.toString());
                 } else {
-                    printToAll(echoes.get((echoes.indexOf(this) + 1) % echoes.size()).id + test.toString());
+                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + test.toString());
                 }
             }
-            leave();
         } catch (Exception ex) {
-            System.out.println(id + "Error occurred...");
+            System.out.println(id + " Error occurred...");
             try {
-                leave();
+                leave(false);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void leave() throws IOException {
+    private void leave(boolean wincheck) throws IOException {
         echoes.remove(this);
-        if(echoes.size() < 2) {
+        if(echoes.size() < 2 || wincheck) {
             printToAll("Purge");
+            output.println("Purge");
             test.reset();
         }
-//        printToAll("Player " + id + " left...");
         socket.close();
     }
 
