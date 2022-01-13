@@ -18,7 +18,21 @@ public class ClientEcho extends Thread {
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             client.setID(Integer.parseInt(input.readLine()));
             while(true) {
-                client.receive(input.readLine());
+                message = input.readLine();
+                if(message.equals("Purge")) {
+                    sleep(5000);
+                    client.quit();
+                    break;
+                }
+                    StringBuilder sb = new StringBuilder();
+                    for(int i = 0; i < 3; i++) {
+                        for(int j = 0; j < 3; j++) {
+                            sb.append(message.substring(3 * i + j, 3 * i + j + 1));
+                        }
+                        sb.append(System.lineSeparator());
+                    }
+                    client.receive(sb.toString(), Integer.parseInt(message.substring(0, 1)) == client.getID());
+
             }
         } catch (Exception ex) {
             System.out.println("Error occurred...");

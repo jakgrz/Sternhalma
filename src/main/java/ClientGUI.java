@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,16 +15,23 @@ public class ClientGUI extends JFrame {
     public ClientGUI() {
         setSize(320, 240);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(0, 1));
         setResizable(false);
 
-        client = new Client(this);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                quit();
+            }
+        });
 
         in = new JTextField();
         out = new JTextArea();
         out.setEditable(false);
-        postButton = new JButton("Post");
+        postButton = new JButton("Please wait");
+        postButton.setEnabled(false);
+
+        connect();
 
         postButton.addActionListener(e -> {
             client.post(in.getText());
@@ -36,20 +44,34 @@ public class ClientGUI extends JFrame {
         add(postButton);
         add(in);
 
-        setTitle("Sternhalma " + client.getID());
         getRootPane().setDefaultButton(postButton);
     }
 
+    public void connect() {
+        String host = JOptionPane.showInputDialog(this, "Enter IP:");
+        client = new Client(this, host, 5000);
+        out.setText("");
+    }
+
     public void receive(String message, boolean active) {
-        out.append(message);
-        out.append(System.lineSeparator());
+        out.setText(message);
         if(active) {
             postButton.setEnabled(true);
         }
     }
 
+    public void quit() {
+        if(postButton.isEnabled()) {
+            client.post("quitnext");
+        } else {
+            client.post("quit");
+        }
+        System.exit(0);
+    }
+
     public static void main(String[] args) {
         ClientGUI client = new ClientGUI();
+        client.setTitle("Sternhalma");
         client.setVisible(true);
     }
 }
