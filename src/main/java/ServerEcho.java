@@ -53,7 +53,6 @@ public class ServerEcho extends Thread {
                     break;
                 }
                 if(line.substring(1).equals("wincontrol")) {
-                    printToAll("Won");
                     leave(true);
                     break;
                 }
