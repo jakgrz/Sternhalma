@@ -50,14 +50,10 @@ public class ServerEcho extends Thread {
                     leave(false);
                     break;
                 }
-                if(line.substring(1).equals("wincontrol")) {
-                    leave(true);
-                    break;
-                }
                 if(false /* tutaj sprawdzany jest warunek  */ ) {
-                    output.println(id);
+                    output.println(id + "mapHere");
                 } else {
-                    printToAll(echoes.get((echoes.indexOf(this) + 1) % echoes.size()).id + "");
+                    printToAll(echoes.get((echoes.indexOf(this) + 1) % echoes.size()).id + "mapHere");
                 }
             }
         } catch (Exception ex) {

@@ -25,15 +25,7 @@ public class ClientEcho extends Thread {
                     client.quit();
                     break;
                 }
-                    StringBuilder sb = new StringBuilder();
-                    for(int i = 0; i < 3; i++) {
-                        for(int j = 0; j < 3; j++) {
-                            sb.append(message.substring(3 * i + j, 3 * i + j + 1));
-                        }
-                        sb.append(System.lineSeparator());
-                    }
-                    client.receive(sb.toString(), Integer.parseInt(message.substring(0, 1)) == client.getID());
-
+                    client.receive(message, Integer.parseInt(message.substring(0, 1)) == client.getID());
             }
         } catch (Exception ex) {
             System.out.println("Error occurred...");
