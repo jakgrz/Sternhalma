@@ -11,14 +11,12 @@ public class ServerEcho extends Thread {
     private ArrayList<ServerEcho> echoes;
     private PrintWriter output;
     private int count;
-    private testowa test;
 
-    public ServerEcho(Socket socket, int id, ArrayList<ServerEcho> echoes, int count, testowa test) {
+    public ServerEcho(Socket socket, int id, ArrayList<ServerEcho> echoes, int count) {
         this.socket = socket;
         this.id = id;
         this.echoes = echoes;
         this.count = count;
-        this.test = test;
     }
 
     @Override
@@ -35,7 +33,7 @@ public class ServerEcho extends Thread {
             }
 
             if(echoes.indexOf(this) == 0) {
-                printToAll(id + test.reset());
+                printToAll(id + "");
             }
 
             while(true) {
@@ -48,7 +46,7 @@ public class ServerEcho extends Thread {
                     break;
                 }
                 if(line.substring(1).equals("quitnextcontrol")) {
-                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + test.toString());
+                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + "");
                     leave(false);
                     break;
                 }
@@ -56,10 +54,10 @@ public class ServerEcho extends Thread {
                     leave(true);
                     break;
                 }
-                if(test.place(id, Integer.parseInt(line.substring(1, 2)), Integer.parseInt(line.substring(2, 3)))) {
-                    output.println(id + test.toString());
+                if(false) {
+                    output.println(id);
                 } else {
-                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + test.toString());
+                    printToAll(echoes.get((echoes.indexOf(this) + 1) % echoes.size()).id + "");
                 }
             }
         } catch (Exception ex) {
@@ -77,7 +75,6 @@ public class ServerEcho extends Thread {
         if(echoes.size() < 2 || wincheck) {
             printToAll("Purge");
             output.println("Purge");
-            test.reset();
         }
         socket.close();
     }

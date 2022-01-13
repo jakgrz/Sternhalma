@@ -8,7 +8,6 @@ public class Server {
         ArrayList<ServerEcho> echoes = new ArrayList<>();
         Socket socket = null;
         ServerEcho echo = null;
-        testowa test = new testowa();
         try {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter player count: ");
@@ -16,7 +15,7 @@ public class Server {
             ServerSocket server = new ServerSocket(5000);
             for(int i = 0; i < count; i++) {
                 socket = server.accept();
-                echo = new ServerEcho(socket, i, echoes, count, test);
+                echo = new ServerEcho(socket, i, echoes, count);
                 echoes.add(echo);
                 echo.start();
             }
