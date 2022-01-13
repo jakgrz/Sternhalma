@@ -46,6 +46,10 @@ public class ServerEcho extends Thread {
                 if(line.substring(1).equals("quitcontrol")) {
                     break;
                 }
+                if(line.substring(1).equals("quitnextcontrol")) {
+                    printToAll(echoes.get((echoes.indexOf(this) + 1) % echoes.size()).id + test.toString());
+                    break;
+                }
                 if(line.substring(1).equals("wincontrol")) {
                     printToAll("Won");
                     break;

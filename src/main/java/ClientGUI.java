@@ -44,7 +44,6 @@ public class ClientGUI extends JFrame {
         add(postButton);
         add(in);
 
-        setTitle("Sternhalma " + client.getID());
         getRootPane().setDefaultButton(postButton);
     }
 
@@ -62,7 +61,11 @@ public class ClientGUI extends JFrame {
     }
 
     public void quit() {
-        client.post("quit");
+        if(postButton.isEnabled()) {
+            client.post("quitnext");
+        } else {
+            client.post("quit");
+        }
         System.exit(0);
     }
 

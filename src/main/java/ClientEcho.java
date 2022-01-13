@@ -19,7 +19,8 @@ public class ClientEcho extends Thread {
             client.setID(Integer.parseInt(input.readLine()));
             while(true) {
                 message = input.readLine();
-                if(message.equals("purge")) {
+                if(message.equals("Purge")) {
+                    sleep(5000);
                     client.quit();
                     break;
                 }
