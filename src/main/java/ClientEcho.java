@@ -17,6 +17,7 @@ public class ClientEcho extends Thread {
         try {
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             client.setID(Integer.parseInt(input.readLine()));
+            client.setCount(Integer.parseInt(input.readLine()));
             while(true) {
                 message = input.readLine();
                 if(message.equals("Purge")) {

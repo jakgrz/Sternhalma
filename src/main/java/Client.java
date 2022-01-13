@@ -5,12 +5,16 @@ import java.net.UnknownHostException;
 
 public class Client {
     int id;
+    int count;
     Socket socket;
     ClientGUI gui;
     PrintWriter output;
 
     public void setID(int id) { this.id = id; }
     public int getID() { return this.id; }
+
+    public void setCount(int count) { this.count = count; }
+    public int getCount() { return this.count; }
 
     public Client(ClientGUI gui, String host, int port) {
         this.gui = gui;
@@ -28,7 +32,7 @@ public class Client {
     }
 
     public void post(String message) {
-        output.println(id + message + "control");
+        output.println(id + message);
     }
 
     public void receive(String message, boolean active) {

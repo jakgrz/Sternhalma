@@ -22,10 +22,10 @@ public class ServerEcho extends Thread {
     @Override
     public void run() {
         try {
-
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(socket.getOutputStream(), true);
             output.println(id);
+            output.println(count);
             String line;
 
             while(echoes.size() < count) {
@@ -41,12 +41,12 @@ public class ServerEcho extends Thread {
                 if(line.substring(1).isBlank()) {
                     continue;
                 }
-                if(line.substring(1).equals("quitcontrol")) {
+                if(line.substring(1).equals("quit")) {
                     leave(false);
                     break;
                 }
-                if(line.substring(1).equals("quitnextcontrol")) {
-                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + "");
+                if(line.substring(1).equals("quitnext")) {
+                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + "mapHere");
                     leave(false);
                     break;
                 }
@@ -54,7 +54,7 @@ public class ServerEcho extends Thread {
                     leave(true);
                     break;
                 }
-                if(false) {
+                if(false /* tutaj sprawdzany jest warunek  */ ) {
                     output.println(id);
                 } else {
                     printToAll(echoes.get((echoes.indexOf(this) + 1) % echoes.size()).id + "");
