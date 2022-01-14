@@ -1,7 +1,15 @@
+/**
+ * This class is a map of a game board and contains field objects
+ */
 public class Map {
+
     private Field[][] fields;
     private int players;
 
+    /**
+     * Constructor that creates the map by filling it with a set of fields
+     * @param players is number of players
+     */
     public Map(int players) {
         fields = new Field[17][25];
         this.players = players;
@@ -355,10 +363,24 @@ public class Map {
         }
     }
 
+    /**
+     * This method creates or modifies a field at certain coordinates
+     * @param x is first coordinate of the field on the board
+     * @param y is second coordinate of the field on the board
+     * @param color1 is the current color id of the field
+     * @param color2 is the destination color id of the field
+     * @param isEnabled indicates whether the field is active
+     */
     private void setField(int x, int y, int color1, int color2, boolean isEnabled) {
         this.fields[x][y] = new Field(color1, color2, isEnabled,50 + 17.5 * y, 50 + 30 * x);
     }
 
+    /**
+     * This method returns a field at certain coordinates
+     * @param x is first coordinate of the field on the board
+     * @param y is second coordinate of the field on the board
+     * @return field at certain coordinates
+     */
     public Field getField(int x, int y) {
         return this.fields[x][y];
     }
