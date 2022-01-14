@@ -4,6 +4,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
+/**
+ * This class draws the map in the app window
+ */
 public class MyPanel extends JPanel implements MouseListener {
     private Map map;
     private Field passButton;
@@ -21,6 +24,14 @@ public class MyPanel extends JPanel implements MouseListener {
     private Client client;
     private boolean active;
 
+    /**
+     * Constructor that initial
+     * @param map is a map of the board
+     * @param numberOfPlayers is the number of players
+     * @param myLabel is the label that indicates whether the player is active
+     * @param client is the client that connects to the server
+     * @param seed is the seed
+     */
     MyPanel(Map map, int numberOfPlayers, MyLabel myLabel, Client client, int seed) {
         this.setPreferredSize(new Dimension(720,480));
         this.map = map;
@@ -44,6 +55,10 @@ public class MyPanel extends JPanel implements MouseListener {
         repaint();
     }
 
+    /**
+     * This method paints fields on the board
+     * @param g is a graphics object
+     */
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
@@ -61,6 +76,16 @@ public class MyPanel extends JPanel implements MouseListener {
         }
     }
 
+    /**
+     * this method checks is the move is valid
+     * @param x_0  is first coordinate of the current field on the board
+     * @param y_0  is second coordinate of the current field on the board
+     * @param x_1  is first coordinate of the destination field on the board
+     * @param y_1  is second coordinate of the destination field on the board
+     * @param x_2  is first coordinate of the previous field on the board
+     * @param y_2  is second coordinate of the previous field on the board
+     * @return true if the move is valid
+     */
     private boolean validMove(int x_0, int y_0, int x_1, int y_1, int x_2, int y_2) {
         //sprawdzam czy nie wychodze z pola docelowego
         if (map.getField(x_0,y_0).getDestinationColor() == activePlayer && map.getField(x_1,y_1).getDestinationColor() != activePlayer)
@@ -105,6 +130,16 @@ public class MyPanel extends JPanel implements MouseListener {
         return false;
     }
 
+    /**
+     * this method checks is the jump is valid
+     * @param x_0  is first coordinate of the current field on the board
+     * @param y_0  is second coordinate of the current field on the board
+     * @param x_1  is first coordinate of the destination field on the board
+     * @param y_1  is second coordinate of the destination field on the board
+     * @param x_2  is first coordinate of the previous field on the board
+     * @param y_2  is second coordinate of the previous field on the board
+     * @return true if the jump is valid
+     */
     private boolean validJump(int x_0, int y_0, int x_1, int y_1, int x_2, int y_2) {
         //sprawdzam czy mozliwy jest skok w lewo
         if ((x_1 != x_2 || y_1 != y_2) && x_0 == x_1 && y_0 - y_1 == 4 && (map.getField(x_1, y_1 + 2).getColorNumber() >= 1 && map.getField(x_1, y_1 + 2).getColorNumber() <= 6) && map.getField(x_1, y_1).getColorNumber() == 0 && !(map.getField(x_0, y_0).getDestinationColor() == this.activePlayer && map.getField(x_1, y_1).getDestinationColor() != this.activePlayer)) {
@@ -134,6 +169,10 @@ public class MyPanel extends JPanel implements MouseListener {
         return false;
     }
 
+    /**
+     * Overriding method that moves pawns on the field
+     * @param e is a mouse event
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (!gameFinished && active && client.getID() == activePlayer) {
@@ -218,6 +257,10 @@ public class MyPanel extends JPanel implements MouseListener {
         }
     }
 
+    /**
+     * This method checks if the player has finished the game
+     * @param x is the number of a player
+     */
     private void hasFinished(int x) {
         int counter = 0;
 
@@ -237,6 +280,9 @@ public class MyPanel extends JPanel implements MouseListener {
         }
     }
 
+    /**
+     * This method ends the player's turn if the player wants to pass
+     */
     public void passTurn() {
         move = false;
         mustJump = false;
@@ -257,6 +303,12 @@ public class MyPanel extends JPanel implements MouseListener {
         activePlayer = players.elementAt(playerIndex);
     }
 
+    /**
+     * This method checks if there is available next jump
+     * @param x is first coordinate of the field on the board
+     * @param y is second coordinate of the field on the board
+     * @return true if next jump is available
+     */
     private boolean nextJump(int x, int y) {
         //sprawdzam czy mozna skoczyc w lewo-gora
         if (x - 2 >= 0 && y - 2 >= 0 && validJump(x, y, x - 2, y - 2, active_x, active_y) && map.getField(x - 2, y - 2).isEnabled())
@@ -281,6 +333,11 @@ public class MyPanel extends JPanel implements MouseListener {
         return false;
     }
 
+    /**
+     * Sets map from the message
+     * @param message is the map in a string message
+     * @param active is a state of the client
+     */
     public void setMap(String message, boolean active) {
         this.active = active;
         if (active)
@@ -305,6 +362,10 @@ public class MyPanel extends JPanel implements MouseListener {
         repaint();
     }
 
+    /**
+     * Is a method that returns the current state of map in string
+     * @return is a current state of map
+     */
     public String toString() {
         StringBuilder message = new StringBuilder();
 
@@ -320,23 +381,31 @@ public class MyPanel extends JPanel implements MouseListener {
         return message.toString();
     }
 
+    /**
+     * Overriding method that is empty
+     * @param e is a mouse event
+     */
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {}
 
-    }
-
+    /**
+     * Overriding method that is empty
+     * @param e is a mouse event
+     */
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {}
 
-    }
-
+    /**
+     * Overriding method that is empty
+     * @param e is a mouse event
+     */
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent e) {}
 
-    }
-
+    /**
+     * Overriding method that is empty
+     * @param e is a mouse event
+     */
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+    public void mouseExited(MouseEvent e) {}
 }
