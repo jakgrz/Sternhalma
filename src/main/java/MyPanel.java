@@ -36,13 +36,10 @@ public class MyPanel extends JPanel implements MouseListener {
         this.client = client;
         this.active = (client.getID() == 1);
         players = new Vector<>();
-        System.out.println("panelcount: " + numberOfPlayers);
         for (int i = 1; i <= numberOfPlayers; ++i) {
             players.add(i);
         }
         this.activePlayer = players.elementAt(playerIndex);
-
-        label.setText("Zaczyna gracz numer: " + (this.activePlayer));
 
         repaint();
     }
@@ -139,25 +136,11 @@ public class MyPanel extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (!gameFinished && active) {
+        if (!gameFinished && active && client.getID() == activePlayer) {
 
             for (int i = 0; i < 17; ++i) {
                 for (int j = 0; j < 25; ++j) {
                     if (map.getField(i,j).getBounds2D().contains(e.getX(),e.getY())) {
-
-                        //anulujemy ruch
-                      /*  if (map.getField(i,j).getColorNumber() == 10  && move == true) {
-                            map.getField(i,j).setColor(activePlayer);
-                            map.getField(i,j).setColorNumber(activePlayer);
-                            move = false;
-                            playerIndex++;
-                            if (playerIndex >= players.size()) {
-                                playerIndex = 0;
-                            }
-                            activePlayer = players.elementAt(playerIndex);
-                            label.setText("Ruch gracza numer: " + this.activePlayer);
-                        }*/
-
                         //wybieramy pionek do ruchu i zaznaczamy go
                         if (map.getField(i,j).getColorNumber() == this.activePlayer && move == false) {
                             map.getField(i,j).setColor(7);
@@ -170,14 +153,6 @@ public class MyPanel extends JPanel implements MouseListener {
                         //ruszamy pionkiem
                         if (map.getField(i,j).getColorNumber() == 0 && move == true && validMove(active_x, active_y, i, j, previous_x, previous_y)) {
                             if (jump) {
-                            /*map.getField(i,j).setColor(10);
-                            map.getField(i,j).setColorNumber(10);
-                            map.getField(active_x,active_y).setColor(0);
-                            map.getField(active_x,active_y).setColorNumber(0);
-                            active_x = i;
-                            active_y = j;
-                            jump = false;*/
-
                                 //sprawdzam czy po tym skoku beda dostepne inne skoki
                                 //jesli tak to pionek zostaje aktywny
                                 if (nextJump(i, j)) {
@@ -191,22 +166,6 @@ public class MyPanel extends JPanel implements MouseListener {
                                     active_y = j;
                                     mustJump = true;
                                 }
-                                //sprawdzam czy po tym skoku beda dostepne inne skoki
-                                //jesli tak to pionek zostaje aktywny
-                                /*if ((i - 2 >= 0 && j - 2 >= 0 && map.getField(i - 2, j - 2).isEnabled() && validJump(i ,j, i - 2, j - 2, active_x, active_y)) ||
-                                        (i - 2 >= 0 && j + 2 <= 24 && map.getField(i - 2, j + 2).isEnabled() && validJump(i ,j, i - 2, j + 2, active_x, active_y)) ||
-                                        (j - 4 >= 0 && map.getField(i, j - 4).isEnabled() && validJump(i ,j, i, j - 4,active_x, active_y)) ||
-                                        (j + 4 >= 24 && map.getField(i, j + 4).isEnabled() && validJump(i ,j, i, j + 4,active_x, active_y)) ||
-                                        (i + 2 <= 16 && j - 2 >= 0 && map.getField(i + 2, j - 2).isEnabled() && validJump(i ,j, i + 2, j - 2,active_x, active_y)) ||
-                                        (i + 2 <= 16 && j + 2 <= 24 && map.getField(i + 2, j + 2).isEnabled() && validJump(i ,j, i + 2, j + 2,active_x, active_y))) {
-                                    map.getField(i,j).setColor(10);
-                                    map.getField(i,j).setColorNumber(10);
-                                    map.getField(active_x,active_y).setColor(0);
-                                    map.getField(active_x,active_y).setColorNumber(0);
-                                    active_x = i;
-                                    active_y = j;
-                                    mustJump = true;
-                                }*/
                                 //jesli nie to pionek przestaje byc aktywny
                                 else {
                                     map.getField(i,j).setColor(activePlayer);
@@ -226,10 +185,6 @@ public class MyPanel extends JPanel implements MouseListener {
                                         playerIndex = 0;
                                     }
                                     activePlayer = players.elementAt(playerIndex);
-
-                                    if (!gameFinished) {
-                                        label.setText("Ruch gracza numer: " + this.activePlayer);
-                                    }
                                 }
                                 jump = false;
                             }
@@ -248,10 +203,6 @@ public class MyPanel extends JPanel implements MouseListener {
                                     playerIndex = 0;
                                 }
                                 activePlayer = players.elementAt(playerIndex);
-
-                                if (!gameFinished) {
-                                    label.setText("Ruch gracza numer: " + this.activePlayer);
-                                }
                             }
                         }
                         //repaint();
@@ -263,7 +214,6 @@ public class MyPanel extends JPanel implements MouseListener {
                 passTurn();
             }
 
-            //wysyla mape na serwer
             client.post(toString());
         }
     }
@@ -305,10 +255,6 @@ public class MyPanel extends JPanel implements MouseListener {
             playerIndex = 0;
         }
         activePlayer = players.elementAt(playerIndex);
-
-        if (!gameFinished) {
-            label.setText("Ruch gracza numer: " + this.activePlayer);
-        }
     }
 
     private boolean nextJump(int x, int y) {
@@ -337,6 +283,11 @@ public class MyPanel extends JPanel implements MouseListener {
 
     public void setMap(String message, boolean active) {
         this.active = active;
+        if (active)
+            this.label.setText("Twoja tura!");
+        else {
+            this.label.setText("");
+        }
         int temp;
         int counter = 1;
 
@@ -356,24 +307,16 @@ public class MyPanel extends JPanel implements MouseListener {
 
     public String toString() {
         StringBuilder message = new StringBuilder();
-        int temp;
 
-        if (move)
-            message.append(activePlayer);
-        else {
-            temp = playerIndex;
-            temp++;
-            if (temp >= players.size()) {
-                temp = 0;
-            }
-            message.append(players.elementAt(temp));
-        }
+        message.append(activePlayer);
 
         for (int i = 0; i < 17; ++i) {
             for (int j = 0; j < 25; ++j) {
                 message.append(map.getField(i, j).getColorNumber());
             }
         }
+        System.out.println(move);
+        System.out.println(message.toString());
         return message.toString();
     }
 
