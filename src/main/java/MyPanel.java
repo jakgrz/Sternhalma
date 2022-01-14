@@ -52,6 +52,8 @@ public class MyPanel extends JPanel implements MouseListener {
         }
         this.activePlayer = players.elementAt(playerIndex);
 
+        if (this.active)
+            label.setText("Twoja tura!");
         repaint();
     }
 
