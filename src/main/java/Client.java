@@ -16,7 +16,7 @@ public class Client {
     public void setCount(int count) { this.count = count; }
     public int getCount() { return this.count; }
 
-    public Client(ClientGUI gui, String host, int port) {
+    public Client(ClientGUI gui, String host, int port) throws IOException {
         this.gui = gui;
         try {
             socket = new Socket(host, port);
@@ -28,7 +28,8 @@ public class Client {
             System.out.println("No I/O...");
             System.exit(1);
         }
-        new ClientEcho(socket, this).start();
+        ClientEcho echo = new ClientEcho(socket, this);
+        echo.start();
     }
 
     public void post(String message) {

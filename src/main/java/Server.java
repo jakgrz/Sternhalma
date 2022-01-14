@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class Server {
     public static void main(String[] args) {
         ArrayList<ServerEcho> echoes = new ArrayList<>();
-        Socket socket = null;
         ServerEcho echo = null;
         try {
             Scanner scanner = new Scanner(System.in);
@@ -21,8 +20,7 @@ public class Server {
             int count = scanner.nextInt();
             ServerSocket server = new ServerSocket(5000);
             for(int i = 1; i <= count; i++) {
-                socket = server.accept();
-                echo = new ServerEcho(socket, i, echoes, count);
+                echo = new ServerEcho(server.accept(), i, echoes, count);
                 echoes.add(echo);
                 echo.start();
             }

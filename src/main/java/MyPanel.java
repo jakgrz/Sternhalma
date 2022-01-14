@@ -10,7 +10,6 @@ public class MyPanel extends JPanel implements MouseListener {
     private MyLabel label;
     private Field tempField;
     private int activePlayer;
-    private int numberOfPlayers;
     private boolean move;
     private boolean jump;
     private int active_x, active_y;
@@ -26,7 +25,6 @@ public class MyPanel extends JPanel implements MouseListener {
         this.setPreferredSize(new Dimension(720,480));
         this.map = map;
         this.passButton = new Field(0,0,true,0,0);
-        this.numberOfPlayers = numberOfPlayers;
         addMouseListener(this);
         this.playerIndex = 0;
         this.move = false;
@@ -38,12 +36,14 @@ public class MyPanel extends JPanel implements MouseListener {
         this.client = client;
         this.active = (client.getID() == 1);
         players = new Vector<>();
+        System.out.println("panelcount: " + numberOfPlayers);
         for (int i = 1; i <= numberOfPlayers; ++i) {
             players.add(i);
         }
         this.activePlayer = players.elementAt(playerIndex);
 
         label.setText("Zaczyna gracz numer: " + (this.activePlayer));
+
         repaint();
     }
 

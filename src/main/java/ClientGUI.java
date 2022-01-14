@@ -11,7 +11,7 @@ public class ClientGUI extends JFrame {
     MyPanel panel;
     MyLabel label;
 
-    public ClientGUI() {
+    public ClientGUI() throws IOException {
         setSize(720, 720);
         setLocationRelativeTo(null);
         //setLayout(new GridLayout(0, 1));
@@ -33,7 +33,7 @@ public class ClientGUI extends JFrame {
         add(label,BorderLayout.SOUTH);
     }
 
-    public void connect() {
+    public void connect() throws IOException {
         String host = JOptionPane.showInputDialog(this, "Enter IP:");
         client = new Client(this, host, 5000);
         //out.setText("");
@@ -52,7 +52,7 @@ public class ClientGUI extends JFrame {
         System.exit(0);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ClientGUI client = new ClientGUI();
         client.setTitle("Sternhalma");
         client.setVisible(true);
