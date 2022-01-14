@@ -376,8 +376,6 @@ public class MyPanel extends JPanel implements MouseListener {
                 message.append(map.getField(i, j).getColorNumber());
             }
         }
-        System.out.println(move);
-        System.out.println(message.toString());
         return message.toString();
     }
 
