@@ -1,55 +1,74 @@
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * The window app using for controlling the game.
+ */
 public class ClientGUI extends JFrame {
     Client client;
-    JTextField in;
-    JTextArea out;
-    JButton postButton;
+    MyPanel panel;
+    MyLabel label;
 
-    public ClientGUI() {
-        setSize(320, 240);
+    /**
+     * A class constructor.
+     * @throws IOException Thrown on connection error.
+     */
+    public ClientGUI() throws IOException {
+        setSize(720, 720);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(0, 1));
-        setResizable(false);
+        setResizable(true);
 
-        client = new Client(this);
-
-        in = new JTextField();
-        out = new JTextArea();
-        out.setEditable(false);
-        postButton = new JButton("Post");
-
-        postButton.addActionListener(e -> {
-            client.post(in.getText());
-            in.setText("");
-            in.requestFocus();
-            postButton.setEnabled(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                quit();
+            }
         });
 
-        add(out);
-        add(postButton);
-        add(in);
+        connect();
 
-        setTitle("Sternhalma " + client.getID());
-        getRootPane().setDefaultButton(postButton);
+        label = new MyLabel();
+        panel = new MyPanel(new Map(client.getCount()), client.getCount(), label, client, client.getSeed());
+
+        add(panel, BorderLayout.CENTER);
+        add(label,BorderLayout.SOUTH);
     }
 
+    /**
+     * Invoking this method establishes the connection between this client and server.
+     * IP is obtained via dialog window.
+     * @throws IOException Thrown on connection error.
+     */
+    public void connect() throws IOException {
+        String host = JOptionPane.showInputDialog(this, "Enter IP:");
+        client = new Client(this, host);
+    }
+
+    /**
+     * Method for handling data received from the server.
+     * @param message String received from server.
+     * @param active Activation flag.
+     * @see Client
+     */
     public void receive(String message, boolean active) {
-        out.append(message);
-        out.append(System.lineSeparator());
-        if(active) {
-            postButton.setEnabled(true);
-        }
+       panel.setMap(message, active);
     }
 
-    public static void main(String[] args) {
+    /**
+     * Method for closing the app.
+     */
+    public void quit() {
+        System.exit(0);
+    }
+
+    public static void main(String[] args) throws IOException {
         ClientGUI client = new ClientGUI();
+        client.setTitle("Sternhalma");
         client.setVisible(true);
     }
 }

@@ -1,0 +1,64 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Server
+class ServerEcho
+class Client
+class ClientEcho
+class ClientGUI
+
+Server "1" o-- "1..6" ServerEcho
+ClientGUI -- Client
+Client -- ClientEcho
+ClientGUI o-- MyPanel
+Map "1" o-- "1..*" Field
+MyPanel --- Map
+MyPanel --- MyLabel
+
+class ServerEcho {
++void run()
++void leave()
++void printToAll(String message)
+}
+
+class Client {
++void post(String message)
++void receive(String message, boolean active)
++void quit()
+}
+
+class ClientEcho {
++void run()
+}
+
+class ClientGUI {
++void connect()
++void receive(String message, boolean active)
++void quit()
+}
+
+class Field {
++void setColor(int number)
++void setColorNumber(int number)
++int getColor()
++int getColorNumber()
++int getDestinationColor()
++boolean isEnabled()
+}
+
+class Map {
++Field getField()
+}
+
+class MyLabel {
++MyLabel()
+}
+
+class MyPanel {
++void paint()
++void mousePressed()
++void setMap()
++ String toString()
+}
+
+@enduml
