@@ -14,6 +14,7 @@ public class ServerEcho extends Thread {
     private ArrayList<ServerEcho> echoes;
     private PrintWriter output;
     private int count;
+    private int seed;
 
     /**
      * A class constructor.
@@ -23,11 +24,12 @@ public class ServerEcho extends Thread {
      * @param count Number of expected connections.
      * @see Server
      */
-    public ServerEcho(Socket socket, int id, ArrayList<ServerEcho> echoes, int count) {
+    public ServerEcho(Socket socket, int id, ArrayList<ServerEcho> echoes, int count, int seed) {
         this.socket = socket;
         this.id = id;
         this.echoes = echoes;
         this.count = count;
+        this.seed = seed;
     }
 
     /**
@@ -40,6 +42,7 @@ public class ServerEcho extends Thread {
             output = new PrintWriter(socket.getOutputStream(), true);
             output.println(id);
             output.println(count);
+            output.println(seed);
             String line;
 
             while(echoes.size() < count) {
@@ -49,14 +52,10 @@ public class ServerEcho extends Thread {
             while(true) {
                 line = input.readLine();
                 if(line.substring(1).isBlank()) {
-                    continue;
+                    System.out.println("Blank");
                 } else if(line.substring(1).equals("quit")) {
-                    leave(false);
+                    leave();
                     break;
-//                } else if(line.substring(1).equals("quitnext")) {
-//                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + "mapHere");
-//                    leave(false);
-//                    break;
                 } else {
                     printToAll(line);
                 }
@@ -64,16 +63,16 @@ public class ServerEcho extends Thread {
         } catch (Exception ex) {
             System.out.println(id + " Error occurred...");
             try {
-                leave(false);
+                leave();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void leave(boolean wincheck) throws IOException {
+    private void leave() throws IOException {
         echoes.remove(this);
-        if(echoes.size() < 2 || wincheck) {
+        if(echoes.size() < 2) {
             printToAll("Purge");
             output.println("Purge");
         }

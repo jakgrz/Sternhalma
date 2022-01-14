@@ -1,6 +1,7 @@
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -15,12 +16,13 @@ public class Server {
         ArrayList<ServerEcho> echoes = new ArrayList<>();
         ServerEcho echo = null;
         try {
+            Random random = new Random(System.currentTimeMillis());
             Scanner scanner = new Scanner(System.in);
             System.out.print("Enter player count: ");
             int count = scanner.nextInt();
             ServerSocket server = new ServerSocket(5000);
             for(int i = 1; i <= count; i++) {
-                echo = new ServerEcho(server.accept(), i, echoes, count);
+                echo = new ServerEcho(server.accept(), i, echoes, count, random.nextInt(count));
                 echoes.add(echo);
                 echo.start();
             }

@@ -14,6 +14,7 @@ public class ClientEcho extends Thread {
         this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         client.setID(Integer.parseInt(input.readLine()));
         client.setCount(Integer.parseInt(input.readLine()));
+        client.setSeed(Integer.parseInt(input.readLine()));
     }
 
     @Override

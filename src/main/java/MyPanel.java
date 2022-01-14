@@ -21,12 +21,12 @@ public class MyPanel extends JPanel implements MouseListener {
     private Client client;
     private boolean active;
 
-    MyPanel(Map map, int numberOfPlayers, MyLabel myLabel, Client client) {
+    MyPanel(Map map, int numberOfPlayers, MyLabel myLabel, Client client, int seed) {
         this.setPreferredSize(new Dimension(720,480));
         this.map = map;
         this.passButton = new Field(0,0,true,0,0);
         addMouseListener(this);
-        this.playerIndex = 0;
+        this.playerIndex = seed;
         this.move = false;
         this.label = myLabel;
         this.gameFinished = false;
@@ -34,7 +34,7 @@ public class MyPanel extends JPanel implements MouseListener {
         this.previous_x = -1;
         this.previous_y = -1;
         this.client = client;
-        this.active = (client.getID() == 1);
+        this.active = (client.getID() == seed + 1);
         players = new Vector<>();
         for (int i = 1; i <= numberOfPlayers; ++i) {
             players.add(i);
