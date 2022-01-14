@@ -35,7 +35,7 @@ public class MyPanel extends JPanel implements MouseListener {
     MyPanel(Map map, int numberOfPlayers, MyLabel myLabel, Client client, int seed) {
         this.setPreferredSize(new Dimension(720,480));
         this.map = map;
-        this.passButton = new Field(0,0,true,0,0);
+        this.passButton = new Field(client.getID(),0,true,0,0);
         addMouseListener(this);
         this.playerIndex = seed;
         this.move = false;
