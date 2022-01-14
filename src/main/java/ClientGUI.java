@@ -8,15 +8,14 @@ import java.net.UnknownHostException;
 
 public class ClientGUI extends JFrame {
     Client client;
-
     MyPanel panel;
     MyLabel label;
 
     public ClientGUI() {
-        //setSize(320, 240);
+        setSize(720, 720);
         setLocationRelativeTo(null);
         //setLayout(new GridLayout(0, 1));
-        setResizable(false);
+        setResizable(true);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -25,13 +24,13 @@ public class ClientGUI extends JFrame {
             }
         });
 
+        connect();
+
         label = new MyLabel();
         panel = new MyPanel(new Map(client.getCount()), client.getCount(), label, client);
 
         add(panel, BorderLayout.CENTER);
         add(label,BorderLayout.SOUTH);
-
-        connect();
     }
 
     public void connect() {
@@ -41,7 +40,7 @@ public class ClientGUI extends JFrame {
     }
 
     public void receive(String message, boolean active) {
-       panel.setMap(message);
+       panel.setMap(message, active);
     }
 
     public void quit() {

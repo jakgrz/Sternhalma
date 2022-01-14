@@ -32,7 +32,7 @@ public class Client {
     }
 
     public void post(String message) {
-        output.println(id + message);
+        output.println(message);
     }
 
     public void receive(String message, boolean active) {

@@ -20,7 +20,7 @@ public class Server {
             System.out.print("Enter player count: ");
             int count = scanner.nextInt();
             ServerSocket server = new ServerSocket(5000);
-            for(int i = 0; i < count; i++) {
+            for(int i = 1; i <= count; i++) {
                 socket = server.accept();
                 echo = new ServerEcho(socket, i, echoes, count);
                 echoes.add(echo);

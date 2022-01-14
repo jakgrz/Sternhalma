@@ -17,9 +17,10 @@ public class MyPanel extends JPanel implements MouseListener {
     private int previous_x, previous_y;
     private Vector<Integer> players;
     private int playerIndex;
-    boolean gameFinished;
-    boolean mustJump;
-    Client client;
+    private boolean gameFinished;
+    private boolean mustJump;
+    private Client client;
+    private boolean active;
 
     MyPanel(Map map, int numberOfPlayers, MyLabel myLabel, Client client) {
         this.setPreferredSize(new Dimension(720,480));
@@ -27,7 +28,7 @@ public class MyPanel extends JPanel implements MouseListener {
         this.passButton = new Field(0,0,true,0,0);
         this.numberOfPlayers = numberOfPlayers;
         addMouseListener(this);
-        this.playerIndex = 1;
+        this.playerIndex = 0;
         this.move = false;
         this.label = myLabel;
         this.gameFinished = false;
@@ -35,15 +36,17 @@ public class MyPanel extends JPanel implements MouseListener {
         this.previous_x = -1;
         this.previous_y = -1;
         this.client = client;
-
+        this.active = (client.getID() == 1);
         players = new Vector<>();
-        for (int i = 0; i < numberOfPlayers; ++i) {
-            players.add(i + 1);
+        for (int i = 1; i <= numberOfPlayers; ++i) {
+            players.add(i);
         }
         this.activePlayer = players.elementAt(playerIndex);
 
         label.setText("Zaczyna gracz numer: " + (this.activePlayer));
+        repaint();
     }
+
     public void paint(Graphics g){
         Graphics2D g2d = (Graphics2D) g;
 
@@ -136,7 +139,7 @@ public class MyPanel extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (!gameFinished) {
+        if (!gameFinished && active) {
 
             for (int i = 0; i < 17; ++i) {
                 for (int j = 0; j < 25; ++j) {
@@ -259,7 +262,6 @@ public class MyPanel extends JPanel implements MouseListener {
             if (passButton.getBounds2D().contains(e.getX(),e.getY())) {
                 passTurn();
             }
-            repaint();
 
             //wysyla mape na serwer
             client.post(toString());
@@ -333,7 +335,8 @@ public class MyPanel extends JPanel implements MouseListener {
         return false;
     }
 
-    public void setMap(String message) {
+    public void setMap(String message, boolean active) {
+        this.active = active;
         int temp;
         int counter = 1;
 
@@ -352,26 +355,26 @@ public class MyPanel extends JPanel implements MouseListener {
     }
 
     public String toString() {
-        String message = "";
+        StringBuilder message = new StringBuilder();
         int temp;
 
-        if (move == true)
-            message += Integer.toString(activePlayer);
+        if (move)
+            message.append(activePlayer);
         else {
             temp = playerIndex;
             temp++;
             if (temp >= players.size()) {
                 temp = 0;
             }
-            message += Integer.toString(players.elementAt(temp));
+            message.append(players.elementAt(temp));
         }
 
         for (int i = 0; i < 17; ++i) {
             for (int j = 0; j < 25; ++j) {
-                message += Integer.toString(map.getField(i, j).getColorNumber());
+                message.append(map.getField(i, j).getColorNumber());
             }
         }
-        return message;
+        return message.toString();
     }
 
     @Override

@@ -46,28 +46,19 @@ public class ServerEcho extends Thread {
                 System.out.println("Waiting " + id);
             }
 
-            if(echoes.indexOf(this) == 0) {
-                printToAll(id + "");
-            }
-
             while(true) {
                 line = input.readLine();
                 if(line.substring(1).isBlank()) {
                     continue;
-                }
-                if(line.substring(1).equals("quit")) {
+                } else if(line.substring(1).equals("quit")) {
                     leave(false);
                     break;
-                }
-                if(line.substring(1).equals("quitnext")) {
-                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + "mapHere");
-                    leave(false);
-                    break;
-                }
-                if(false /* tutaj sprawdzany jest warunek  */ ) {
-                    output.println(id + "mapHere");
+//                } else if(line.substring(1).equals("quitnext")) {
+//                    printToAll(echoes.get((echoes.indexOf(this)) % echoes.size()).id + "mapHere");
+//                    leave(false);
+//                    break;
                 } else {
-                    printToAll(echoes.get((echoes.indexOf(this) + 1) % echoes.size()).id + "mapHere");
+                    printToAll(line);
                 }
             }
         } catch (Exception ex) {
@@ -83,7 +74,7 @@ public class ServerEcho extends Thread {
     private void leave(boolean wincheck) throws IOException {
         echoes.remove(this);
         if(echoes.size() < 2 || wincheck) {
-            printToAll(id + "ended");
+            printToAll("Purge");
             output.println("Purge");
         }
         socket.close();

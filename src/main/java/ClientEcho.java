@@ -25,10 +25,11 @@ public class ClientEcho extends Thread {
                     client.quit();
                     break;
                 }
-                    client.receive(message, Integer.parseInt(message.substring(0, 1)) == client.getID());
+                client.receive(message, Character.getNumericValue(message.charAt(0)) == client.getID());
             }
         } catch (Exception ex) {
-            System.out.println("Error occurred...");
+            System.out.println("Error occurred...\n");
+            ex.printStackTrace();
         }
     }
 }
