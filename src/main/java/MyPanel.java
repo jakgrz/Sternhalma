@@ -175,7 +175,7 @@ public class MyPanel extends JPanel implements MouseListener {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        if (!gameFinished && active && client.getID() == activePlayer) {
+        if (!gameFinished && active) {
 
             for (int i = 0; i < 17; ++i) {
                 for (int j = 0; j < 25; ++j) {
