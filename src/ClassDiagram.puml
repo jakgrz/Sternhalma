@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Server
+class ServerEcho
+class Client
+class ClientEcho
+class ClientGUI
+
+Server "1" o-- "1..6" ServerEcho
+ClientGUI -- Client
+Client -- ClientEcho
+
+class ServerEcho {
+void run()
+void leave()
+void printToAll(String message)
+}
+
+class Client {
+void post(String message)
+void receive(String message, boolean active)
+void quit()
+}
+
+class ClientEcho {
+void run()
+}
+
+class ClientGUI {
+void connect()
+void receive(String message, boolean active)
+void quit()
+}
+
+@enduml
