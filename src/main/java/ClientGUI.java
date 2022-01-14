@@ -8,14 +8,14 @@ import java.net.UnknownHostException;
 
 public class ClientGUI extends JFrame {
     Client client;
-    JTextField in;
-    JTextArea out;
-    JButton postButton;
+
+    MyPanel panel;
+    MyLabel label;
 
     public ClientGUI() {
-        setSize(320, 240);
+        //setSize(320, 240);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(0, 1));
+        //setLayout(new GridLayout(0, 1));
         setResizable(false);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -25,47 +25,31 @@ public class ClientGUI extends JFrame {
             }
         });
 
-        in = new JTextField();
-        out = new JTextArea();
-        out.setEditable(false);
-        postButton = new JButton("Please wait");
-        postButton.setEnabled(false);
+        label = new MyLabel();
+        panel = new MyPanel(new Map(client.getCount()), client.getCount(), label, client);
+
+        add(panel, BorderLayout.CENTER);
+        add(label,BorderLayout.SOUTH);
 
         connect();
-
-        postButton.addActionListener(e -> {
-            client.post(in.getText());
-            in.setText("");
-            in.requestFocus();
-            postButton.setEnabled(false);
-        });
-
-        add(out);
-        add(postButton);
-        add(in);
-
-        getRootPane().setDefaultButton(postButton);
     }
 
     public void connect() {
         String host = JOptionPane.showInputDialog(this, "Enter IP:");
         client = new Client(this, host, 5000);
-        out.setText("");
+        //out.setText("");
     }
 
     public void receive(String message, boolean active) {
-        out.setText(message);
-        if(active) {
-            postButton.setEnabled(true);
-        }
+       panel.setMap(message);
     }
 
     public void quit() {
-        if(postButton.isEnabled()) {
+        /*if(postButton.isEnabled()) {
             client.post("quitnext");
         } else {
             client.post("quit");
-        }
+        }*/
         System.exit(0);
     }
 

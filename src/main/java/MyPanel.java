@@ -19,20 +19,22 @@ public class MyPanel extends JPanel implements MouseListener {
     private int playerIndex;
     boolean gameFinished;
     boolean mustJump;
+    Client client;
 
-    MyPanel(Map map, int numberOfPlayers, MyLabel myLabel) {
+    MyPanel(Map map, int numberOfPlayers, MyLabel myLabel, Client client) {
         this.setPreferredSize(new Dimension(720,480));
         this.map = map;
         this.passButton = new Field(0,0,true,0,0);
         this.numberOfPlayers = numberOfPlayers;
         addMouseListener(this);
-        this.playerIndex = (int) Math.floor(Math.random() * numberOfPlayers);
+        this.playerIndex = 1;
         this.move = false;
         this.label = myLabel;
         this.gameFinished = false;
         this.mustJump = false;
         this.previous_x = -1;
         this.previous_y = -1;
+        this.client = client;
 
         players = new Vector<>();
         for (int i = 0; i < numberOfPlayers; ++i) {
@@ -155,8 +157,8 @@ public class MyPanel extends JPanel implements MouseListener {
 
                         //wybieramy pionek do ruchu i zaznaczamy go
                         if (map.getField(i,j).getColorNumber() == this.activePlayer && move == false) {
-                            map.getField(i,j).setColor(10);
-                            map.getField(i,j).setColorNumber(10);
+                            map.getField(i,j).setColor(7);
+                            map.getField(i,j).setColorNumber(7);
                             active_x = i;
                             active_y = j;
                             move = true;
@@ -176,8 +178,8 @@ public class MyPanel extends JPanel implements MouseListener {
                                 //sprawdzam czy po tym skoku beda dostepne inne skoki
                                 //jesli tak to pionek zostaje aktywny
                                 if (nextJump(i, j)) {
-                                    map.getField(i,j).setColor(10);
-                                    map.getField(i,j).setColorNumber(10);
+                                    map.getField(i,j).setColor(7);
+                                    map.getField(i,j).setColorNumber(7);
                                     map.getField(active_x,active_y).setColor(0);
                                     map.getField(active_x,active_y).setColorNumber(0);
                                     previous_x = active_x;
@@ -258,6 +260,9 @@ public class MyPanel extends JPanel implements MouseListener {
                 passTurn();
             }
             repaint();
+
+            //wysyla mape na serwer
+            client.post(toString());
         }
     }
 
@@ -284,7 +289,7 @@ public class MyPanel extends JPanel implements MouseListener {
         move = false;
         mustJump = false;
 
-        if (map.getField(active_x, active_y).getColorNumber() == 10) {
+        if (map.getField(active_x, active_y).getColorNumber() == 7) {
             map.getField(active_x,active_y).setColorNumber(activePlayer);
             map.getField(active_x,active_y).setColor(activePlayer);
             //repaint();
@@ -326,6 +331,47 @@ public class MyPanel extends JPanel implements MouseListener {
             return true;
 
         return false;
+    }
+
+    public void setMap(String message) {
+        int temp;
+        int counter = 1;
+
+        activePlayer = Character.getNumericValue(message.charAt(0));
+        playerIndex = players.indexOf(activePlayer);
+
+        for (int i = 0; i < 17; ++i) {
+            for (int j = 0; j < 25; ++j) {
+                temp = Character.getNumericValue(message.charAt(counter));
+                map.getField(i ,j).setColorNumber(temp);
+                map.getField(i ,j).setColor(temp);
+                ++counter;
+            }
+        }
+        repaint();
+    }
+
+    public String toString() {
+        String message = "";
+        int temp;
+
+        if (move == true)
+            message += Integer.toString(activePlayer);
+        else {
+            temp = playerIndex;
+            temp++;
+            if (temp >= players.size()) {
+                temp = 0;
+            }
+            message += Integer.toString(players.elementAt(temp));
+        }
+
+        for (int i = 0; i < 17; ++i) {
+            for (int j = 0; j < 25; ++j) {
+                message += Integer.toString(map.getField(i, j).getColorNumber());
+            }
+        }
+        return message;
     }
 
     @Override
