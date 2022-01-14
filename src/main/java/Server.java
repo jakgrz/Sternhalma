@@ -21,8 +21,9 @@ public class Server {
             System.out.print("Enter player count: ");
             int count = scanner.nextInt();
             ServerSocket server = new ServerSocket(5000);
+            int seed = random.nextInt(count);
             for(int i = 1; i <= count; i++) {
-                echo = new ServerEcho(server.accept(), i, echoes, count, random.nextInt(count));
+                echo = new ServerEcho(server.accept(), i, echoes, count, seed);
                 echoes.add(echo);
                 echo.start();
             }
