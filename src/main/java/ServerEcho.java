@@ -5,6 +5,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * A server thread used to handle individual client connections.
+ */
 public class ServerEcho extends Thread {
     private Socket socket;
     private int id;
@@ -12,6 +15,14 @@ public class ServerEcho extends Thread {
     private PrintWriter output;
     private int count;
 
+    /**
+     * A class constructor.
+     * @param socket Socket with accepted client connection.
+     * @param id Unique ID given by server.
+     * @param echoes List of all server threads.
+     * @param count Number of expected connections.
+     * @see Server
+     */
     public ServerEcho(Socket socket, int id, ArrayList<ServerEcho> echoes, int count) {
         this.socket = socket;
         this.id = id;
@@ -19,6 +30,9 @@ public class ServerEcho extends Thread {
         this.count = count;
     }
 
+    /**
+     * A thread's run method.
+     */
     @Override
     public void run() {
         try {
@@ -69,7 +83,7 @@ public class ServerEcho extends Thread {
     private void leave(boolean wincheck) throws IOException {
         echoes.remove(this);
         if(echoes.size() < 2 || wincheck) {
-            printToAll("Purge");
+            printToAll(id + "ended");
             output.println("Purge");
         }
         socket.close();
