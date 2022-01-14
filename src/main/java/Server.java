@@ -3,6 +3,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * The server part of the game.
+ * Has to be launched first.
+ * Upon starting it'll ask for player count.
+ * Each client connection is delegated to it's own server thread.
+ * Automatically closes itself on game completion.
+ */
 public class Server {
     public static void main(String[] args) {
         ArrayList<ServerEcho> echoes = new ArrayList<>();
